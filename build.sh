@@ -30,15 +30,44 @@ echo "Starting extraction and customization..."
     CODENAME=${CODENAME} \\
     ROOT_PATH=${ROOT_PATH} \\
     ${ROOT_PATH}/01_edit_iso.sh"
-exit
+
+# Enter the Chroot Environment and Apply Customizations
+echo >&2 "===]> Info: Creating chroot environment... "
+# Mount Required Filesystems for Chroot
+mount --bind /dev "${CHROOT_DIR}/dev"
+mount --bind /dev/pts "${CHROOT_DIR}/dev/pts"
+mount --bind /proc "${CHROOT_DIR}/proc"
+mount --bind /sys "${CHROOT_DIR}/sys"
+
+
+mkdir -p "${CHROOT_DIR}/tmp/setup_files"
+cp /etc/resolv.conf "${CHROOT_DIR}/etc/resolv.conf"
+cp "${ROOT_PATH}/chroot_iso.sh" "${CHROOT_DIR}/tmp/setup_files"
+ls "${CHROOT_DIR}/tmp/setup_files"
+echo >&2 "===]> Info: Running chroot environment... "
+chroot "${CHROOT_DIR}" /bin/bash -c "CODENAME=${CODENAME} /tmp/setup_files/chroot_iso.sh"
+echo >&2 "===]> Info: Getting Kernel environment... "
+#T2_KERNEL=$(chroot "${CHROOT_DIR}" /bin/bash -c "apt-cache depends linux-t2 | grep -Eo 'linux-image-[^ ]+' | head -n 1")
+T2_KERNEL="linux-image-6.11.6-1-t2-oracular"
+echo >&2 "===]> Info: Cleanup the chroot environment... "
+umount "${CHROOT_DIR}/dev/pts"
+umount "${CHROOT_DIR}/dev"
+umount "${CHROOT_DIR}/proc"
+umount "${CHROOT_DIR}/sys"
+
+echo >&2 "===]> Info: Creating iso ... "
 # Run create_iso.sh to generate the new ISO
 # echo "Creating the custom ISO..."
-#/bin/bash -c "
-#    ROOT_PATH=${ROOT_PATH} \\
-#    IMAGE_PATH=${IMAGE_PATH} \\
-#    CHROOT_PATH=${CHROOT_PATH}_${ALTERNATIVE} \\
-#    KERNEL_VERSION=${KERNEL_VERSION}-${ALTERNATIVE} \\
-#    ALTERNATIVE=${ALTERNATIVE} \\
-#    ${ROOT_PATH}/02_create_iso.sh
+/bin/bash -c "
+	ISO_IMAGE=${ISO_IMAGE} \\
+    DESTINATION=${DESTINATION} \\
+    ISO_MOUNT_DIR=${ISO_MOUNT_DIR} \\
+    ISO_WORK_DIR=${ISO_WORK_DIR} \\
+    CHROOT_DIR=${CHROOT_DIR} \\
+    NEW_ISO=${NEW_ISO} \\
+    CODENAME=${CODENAME} \\
+    ROOT_PATH=${ROOT_PATH} \\
+    T2_KERNEL=${T2_KERNEL} \\
+	${ROOT_PATH}/02_create_iso.sh"
 
-#echo "Custom ISO creation process complete. Find the ISO at /path/to/output/custom.iso"
+echo "Custom ISO creation process complete. Find the ISO at ${NEW_ISO}"

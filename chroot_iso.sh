@@ -1,5 +1,7 @@
 #!/bin/bash
 set -eu -o pipefail
+
+
 echo >&2 "===]> Info: Configure environment... "
 echo >&2 "===]> Info: Configure and update apt... "
 
@@ -51,3 +53,7 @@ apt clean
 rm -rf /var/cache/apt/archives/*
 rm -rf /tmp/* ~/.bash_history
 rm -rf /tmp/setup_files
+
+
+
+
