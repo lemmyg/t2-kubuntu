@@ -4,15 +4,15 @@ set -eu -o pipefail
 
 echo >&2 "===]> Info: Configure environment... "
 echo >&2 "===]> Info: Configure and update apt... "
-
-cat <<EOF >/etc/apt/sources.list
-deb http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
-deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
-deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
-EOF
+CODENAME=$(lsb_release -cs)
+#cat <<EOF >/etc/apt/sources.list
+#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
+#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
+#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
+#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
+#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
+#EOF
 apt update
 apt install -y curl
 # Add T2 Repository and Install Packages
@@ -22,6 +22,17 @@ echo "deb [signed-by=/etc/apt/trusted.gpg.d/t2-ubuntu-repo.gpg] https://github.c
 #apt update
 apt update
 apt install -y linux-t2
+
+KERNEL_VERSION=$(dpkg -l | grep -E "^ii  linux-image-[0-9]+\.[0-9]+\.[0-9\.\-]+-generic" | awk '{print $2}' | sed 's/linux-image-\(.*\)-generic/\1/')
+apt purge -y -qq \
+    linux-generic \
+    linux-headers-${KERNEL_VERSION} \
+    linux-headers-${KERNEL_VERSION}-generic \
+    linux-headers-generic \
+    linux-image-${KERNEL_VERSION}-generic \
+    linux-image-generic \
+    linux-modules-${KERNEL_VERSION}-generic \
+    linux-modules-extra-${KERNEL_VERSION}-generic
 
 # Add udev Rule for AMD GPU Power Management
 cat <<EOL > /etc/udev/rules.d/30-amdgpu-pm.rules
@@ -49,6 +60,7 @@ EOL
 #update-grub
 
 # Clean up
+apt-get autoremove -y
 apt clean
 rm -rf /var/cache/apt/archives/*
 rm -rf /tmp/* ~/.bash_history
