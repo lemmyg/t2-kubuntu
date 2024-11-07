@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 DOCKER_IMAGE=ubuntu:24.04
-ISO_IMAGE=/home/lemmyg/Downloads/kubuntu-24.10-desktop-amd64.iso
+ISO_IMAGE=$(pwd)/Downloads/kubuntu-24.10-desktop-amd64.iso
 docker pull ${DOCKER_IMAGE}
 docker run \
   --privileged \

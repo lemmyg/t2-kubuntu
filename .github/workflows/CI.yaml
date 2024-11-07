@@ -1,0 +1,31 @@
+name: Generate md5 sums
+on: [push]
+jobs:
+  Publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Free up disk space for the CI
+        uses: AdityaGarg8/remove-unwanted-software@v1
+        with:
+          remove-android: 'false'
+          remove-dotnet: 'false'
+          remove-haskell: 'false'
+
+      - name: 'Checkout Repo'
+        uses: actions/checkout@v3
+
+      - name: Get kconfig
+        run: |
+          sudo mkdir -p Downloads
+          cd Downloads
+          sudo curl -O https://cdimage.ubuntu.com/kubuntu/releases/24.10/release/kubuntu-24.10-desktop-amd64.iso
+          cd ${{ github.workspace }}
+          sudo chmod a+x ./build_in_docker.sh
+          sudo ./build_in_docker.sh
+          sudo cp $(pwd)/output/*.iso ${{ github.workspace }}
+          
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Kubuntu
+          path: ${{ github.workspace }}/*.iso
