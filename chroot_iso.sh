@@ -4,24 +4,17 @@ set -eu -o pipefail
 
 echo >&2 "===]> Info: Configure environment... "
 echo >&2 "===]> Info: Configure and update apt... "
-CODENAME=$(lsb_release -cs)
-#cat <<EOF >/etc/apt/sources.list
-#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
-#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse
-#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
-#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse
-#deb http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
-#deb-src http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse
-#EOF
+
 apt update
 apt install -y curl
 # Add T2 Repository and Install Packages
+CODENAME=$(lsb_release -cs)
 curl -s --compressed "https://adityagarg8.github.io/t2-ubuntu-repo/KEY.gpg" | gpg --dearmor | tee /etc/apt/trusted.gpg.d/t2-ubuntu-repo.gpg >/dev/null
 curl -s --compressed -o /etc/apt/sources.list.d/t2.list "https://adityagarg8.github.io/t2-ubuntu-repo/t2.list"
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/t2-ubuntu-repo.gpg] https://github.com/AdityaGarg8/t2-ubuntu-repo/releases/download/${CODENAME} ./" | tee -a /etc/apt/sources.list.d/t2.list
 #apt update
 apt update
-apt install -y linux-t2
+apt install -y linux-t2 apple-t2-audio-config
 
 KERNEL_VERSION=$(dpkg -l | grep -E "^ii  linux-image-[0-9]+\.[0-9]+\.[0-9\.\-]+-generic" | awk '{print $2}' | sed 's/linux-image-\(.*\)-generic/\1/')
 apt purge -y -qq \
