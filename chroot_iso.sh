@@ -49,8 +49,8 @@ blacklist cdc_mbim
 EOL
 
 # Add Kernel Parameters to GRUB for Installed System
-#sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash intel_iommu=on iommu=pt pcie_ports=compat"/' /etc/default/grub
-#update-grub
+sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash intel_iommu=on iommu=pt pcie_ports=compat"/' /etc/default/grub
+update-grub
 
 # Clean up
 apt-get autoremove -y
