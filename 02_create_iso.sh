@@ -14,21 +14,21 @@ sed -i 's/--- quiet splash/boot=casper text intel_iommu=on iommu=pt pcie_ports=c
 echo >&2 "===]> Info: Generating final ISO ... "
 (cd "$ISO_WORK_DIR" && find . -type f -print0 | xargs -0 md5sum > md5sum.txt)
 mkdir -p ${DESTINATION}
-#grub-mkrescue -o "${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso" "$ISO_WORK_DIR"
-xorriso -as mkisofs \
-  -iso-level 3 \
-  -full-iso9660-filenames \
-  -volid "KUBUNTU-T2" \
-  -eltorito-boot boot/grub/i386-pc/eltorito.img \
-  -no-emul-boot \
-  -boot-load-size 4 \
-  -boot-info-table \
-  -eltorito-alt-boot \
-  -e EFI/boot/bootx64.efi \
-  -no-emul-boot \
-  -isohybrid-gpt-basdat \
-  -output "${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso" \
-  "$ISO_WORK_DIR"
+grub-mkrescue -o "${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso" "$ISO_WORK_DIR"
+#xorriso -as mkisofs \
+#  -iso-level 3 \
+#  -full-iso9660-filenames \
+#  -volid "KUBUNTU-T2" \
+#  -eltorito-boot boot/grub/i386-pc/eltorito.img \
+#  -no-emul-boot \
+#  -boot-load-size 4 \
+#  -boot-info-table \
+#  -eltorito-alt-boot \
+#  -e EFI/boot/bootx64.efi \
+#  -no-emul-boot \
+#  -isohybrid-gpt-basdat \
+#  -output "${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso" \
+#  "$ISO_WORK_DIR"
 
 
 

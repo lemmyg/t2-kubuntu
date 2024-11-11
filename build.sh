@@ -19,7 +19,7 @@ echo "CODENAME=$CODENAME"
 echo >&2 "===]> Info: Installings required packages..."     
 apt update && apt update && \
     DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt install -y tzdata \
-	&& apt install -y util-linux rsync squashfs-tools grub-pc-bin grub-common xorriso isolinux grub-efi-amd64-bin
+	&& apt install -y util-linux rsync squashfs-tools grub-pc-bin grub-common xorriso isolinux grub-efi-amd64-bin mtools
 # Run entrypoint.sh to extract and customize the ISO
 #echo >&2 "===]> Info: Starting extraction and customization..."
 /bin/bash -c "
@@ -59,8 +59,6 @@ umount "${CHROOT_DIR}/sys"
 
 echo >&2 "===]> Info: Squashing Kubuntu file system ... "
 mksquashfs "$CHROOT_DIR" "$ISO_WORK_DIR/casper/filesystem.squashfs" -comp xz -noappend
-
-echo >&2 "===]> Info: Prepare iso ... "
 
 # Run create_iso.sh to generate the new ISO
 # echo "Creating the custom ISO..."
