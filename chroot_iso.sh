@@ -13,7 +13,7 @@ curl -s --compressed "https://adityagarg8.github.io/t2-ubuntu-repo/KEY.gpg" | gp
 curl -s --compressed -o /etc/apt/sources.list.d/t2.list "https://adityagarg8.github.io/t2-ubuntu-repo/t2.list"
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/t2-ubuntu-repo.gpg] https://github.com/AdityaGarg8/t2-ubuntu-repo/releases/download/${CODENAME} ./" | tee -a /etc/apt/sources.list.d/t2.list
 #apt update
-apt updat
+apt update
 # Add Kernel Parameters to GRUB for Installed System
 sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash intel_iommu=on iommu=pt pcie_ports=compat"/' /etc/default/grub
 update-grub
