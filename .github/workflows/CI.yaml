@@ -13,16 +13,23 @@ jobs:
 
       - name: 'Checkout Repo'
         uses: actions/checkout@v3
+      - name: Cache ISO
+          id: cache-iso
+          uses: actions/cache@v3
+          with:
+          path: ${{ github.workspace }}/Downloads
+          key: kubuntu-iso-24.10
+      - name: Download ISO if not cached
+        if: steps.cache-iso.outputs.cache-hit != 'true'
+           run: |
+             mkdir -p ${{ github.workspace }}/Downloads
+             curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.10-desktop-amd64.iso \
+             https://cdimage.ubuntu.com/kubuntu/releases/24.10/release/kubuntu-24.10-desktop-amd64.iso
 
-      - name: Get kconfig
+      - name: Run build script
         run: |
-          sudo mkdir -p Downloads
-          cd Downloads
-          sudo curl -O https://cdimage.ubuntu.com/kubuntu/releases/24.10/release/kubuntu-24.10-desktop-amd64.iso
-          cd ${{ github.workspace }}
-          sudo chmod a+x ./build_in_docker.sh
-          sudo ./build_in_docker.sh
-          sudo cp $(pwd)/output/*.iso ${{ github.workspace }}
+          chmod +x ${{ github.workspace }}/build_in_docker.sh
+          ${{ github.workspace }}/build_in_docker.sh
           
       - name: Upload package artifact
         uses: actions/upload-artifact@v4
