@@ -42,8 +42,10 @@ mount --bind /proc "${CHROOT_DIR}/proc"
 mount --bind /sys "${CHROOT_DIR}/sys"
 
 mkdir -p "${CHROOT_DIR}/tmp/setup_files"
-rm -f "${CHROOT_DIR}/etc/resolv.conf"
-cp /etc/resolv.conf "${CHROOT_DIR}/etc/resolv.conf"
+#rm -f "${CHROOT_DIR}/etc/resolv.conf"
+#make a back up
+cp -p "${CHROOT_DIR}/etc/resolv.conf" "${CHROOT_DIR}/etc/resolv.conf.backup"
+cp -p /etc/resolv.conf "${CHROOT_DIR}/etc/resolv.conf"
 cp "${ROOT_PATH}/chroot_iso.sh" "${CHROOT_DIR}/tmp/setup_files"
 ls "${CHROOT_DIR}/tmp/setup_files"
 echo >&2 "===]> Info: Running chroot environment... "
@@ -52,6 +54,8 @@ echo >&2 "===]> Info: Getting Kernel environment... "
 T2_KERNEL=$(chroot "${CHROOT_DIR}" /bin/bash -c "apt-cache depends linux-t2 | grep -Eo 'linux-image-[^ ]+' | head -n 1")
 #T2_KERNEL="linux-image-6.11.7-1-t2-oracular"
 echo >&2 "===]> Info: Cleanup the chroot environment... "
+# restore backup
+cp -p "${CHROOT_DIR}/etc/resolv.conf.backup" "${CHROOT_DIR}/etc/resolv.conf"
 umount "${CHROOT_DIR}/dev/pts"
 umount "${CHROOT_DIR}/dev"
 umount "${CHROOT_DIR}/proc"
