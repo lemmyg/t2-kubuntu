@@ -5,11 +5,13 @@ set -eu -o pipefail
 DOCKER_IMAGE=ubuntu:24.04
 ISO_IMAGE=$(pwd)/Downloads/kubuntu-24.10-desktop-amd64.iso
 ISO_IMAGE_OUTPUT="$(pwd)/output/kubuntu-24.10-t2-desktop-amd64.iso"
+
 ISO_WORK_DIR="$(pwd)/kubuntu-iso"
 CHROOT_DIR="$(pwd)/kubuntu-edit"
 mkdir -p "$ISO_WORK_DIR"
 mkdir -p "$CHROOT_DIR"
-mkdir -p "$(pwd)/output"
+mkdir -p "$(dirname "$ISO_IMAGE_OUTPUT")"
+touch "$ISO_IMAGE_OUTPUT"
 echo "DOCKER_IMAGE=${DOCKER_IMAGE}"
 echo "ISO_IMAGE=${ISO_IMAGE}"
 echo "ISO_IMAGE_OUTPUT=${ISO_IMAGE_OUTPUT}"
