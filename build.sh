@@ -19,9 +19,10 @@ echo "CODENAME=$CODENAME"
 echo >&2 "===]> Info: Installings required packages..."     
 apt update && apt update && \
     DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt install -y tzdata \
-	&& apt install -y util-linux rsync squashfs-tools grub-pc-bin grub-common xorriso isolinux grub-efi-amd64-bin mtools
+	&& apt install -y util-linux rsync squashfs-tools grub-pc-bin grub-common \
+	xorriso isolinux grub-efi-amd64-bin mtools dosfstools
 # Run entrypoint.sh to extract and customize the ISO
-#echo >&2 "===]> Info: Starting extraction and customization..."
+echo >&2 "===]> Info: Starting extraction and customization..."
 /bin/bash -c "
     ISO_IMAGE=${ISO_IMAGE} \\
     DESTINATION=${DESTINATION} \\
@@ -52,7 +53,7 @@ echo >&2 "===]> Info: Running chroot environment... "
 chroot "${CHROOT_DIR}" /bin/bash -c "/tmp/setup_files/chroot_iso.sh"
 echo >&2 "===]> Info: Getting Kernel environment... "
 T2_KERNEL=$(chroot "${CHROOT_DIR}" /bin/bash -c "apt-cache depends linux-t2 | grep -Eo 'linux-image-[^ ]+' | head -n 1")
-#T2_KERNEL="linux-image-6.11.7-1-t2-oracular"
+#T2_KERNEL="linux-image-6.11.7-2-t2-oracular"
 echo >&2 "===]> Info: Cleanup the chroot environment... "
 # restore backup
 cp -p "${CHROOT_DIR}/etc/resolv.conf.backup" "${CHROOT_DIR}/etc/resolv.conf"
