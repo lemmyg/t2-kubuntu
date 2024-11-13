@@ -2,20 +2,14 @@
 set -eu -o pipefail
 ROOT_PATH=$(pwd)
 TEMPDIR="/root/work"
-DESTINATION="$ROOT_PATH/output"
 ISO_MOUNT_DIR="$TEMPDIR/kubuntu-original"    # Temporary mount point for the original ISO
 #ISO_WORK_DIR="$TEMPDIR/kubuntu-iso"          # Working directory for the new ISO
 #CHROOT_DIR="$TEMPDIR/kubuntu-edit"           # Chroot environment directory
-NEW_ISO="$DESTINATION/custom-kubuntu.iso"        # Path for the new ISO
-CODENAME="oracular"
 echo "ROOT_PATH=$ROOT_PATH"
 echo "TEMPDIR=$TEMPDIR"  
-echo "DESTINATION=$DESTINATION"  
 echo "ISO_MOUNT_DIR=$ISO_MOUNT_DIR"  
 echo "ISO_WORK_DIR=$ISO_WORK_DIR"  
 echo "CHROOT_DIR=$CHROOT_DIR"
-echo "NEW_ISO=$NEW_ISO"
-echo "CODENAME=$CODENAME" 
 echo >&2 "===]> Info: Installings required packages..."     
 apt update && apt update && \
     DEBIAN_FRONTEND=noninteractive TZ=Europe/London apt install -y tzdata \
@@ -25,12 +19,9 @@ apt update && apt update && \
 echo >&2 "===]> Info: Starting extraction and customization..."
 /bin/bash -c "
     ISO_IMAGE=${ISO_IMAGE} \\
-    DESTINATION=${DESTINATION} \\
     ISO_MOUNT_DIR=${ISO_MOUNT_DIR} \\
     ISO_WORK_DIR=${ISO_WORK_DIR} \\
     CHROOT_DIR=${CHROOT_DIR} \\
-    NEW_ISO=${NEW_ISO} \\
-    CODENAME=${CODENAME} \\
     ROOT_PATH=${ROOT_PATH} \\
     ${ROOT_PATH}/01_edit_iso.sh"
 
@@ -69,13 +60,9 @@ mksquashfs "$CHROOT_DIR" "$ISO_WORK_DIR/casper/filesystem.squashfs" -comp xz -no
 # echo "Creating the custom ISO..."
 echo >&2 "===]> Info: Creating iso ... "
 /bin/bash -c "
-	ISO_IMAGE=${ISO_IMAGE} \\
-    DESTINATION=${DESTINATION} \\
-    ISO_MOUNT_DIR=${ISO_MOUNT_DIR} \\
     ISO_WORK_DIR=${ISO_WORK_DIR} \\
     CHROOT_DIR=${CHROOT_DIR} \\
-    DESTINATION=${DESTINATION} \\
-    CODENAME=${CODENAME} \\
+    ISO_IMAGE_OUTPUT=${ISO_IMAGE_OUTPUT} \\
     ROOT_PATH=${ROOT_PATH} \\
     T2_KERNEL=${T2_KERNEL} \\
 	${ROOT_PATH}/02_create_iso.sh"

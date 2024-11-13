@@ -11,8 +11,6 @@ cp "$CHROOT_DIR/boot/initrd.img-$KERNEL_VERSION" "$ISO_WORK_DIR/casper/initrd"
 echo >&2 "===]> Info: Modify existing grub.cfg ..."
 sed -i 's/--- quiet splash/boot=casper text intel_iommu=on iommu=pt pcie_ports=compat ---/g' "$ISO_WORK_DIR/boot/grub/grub.cfg"
 
-#create output folder
-mkdir -p ${DESTINATION}
 echo >&2 "===]> Info: Creating EFI image ... "
 dd if=/dev/zero of="$ISO_WORK_DIR/EFI/efiboot.img" bs=1M count=10
 mkfs.vfat "$ISO_WORK_DIR/EFI/efiboot.img"
@@ -31,7 +29,7 @@ echo >&2 "===]> Info: Generating final ISO ... "
 xorriso -as mkisofs \
   -iso-level 3 \
   -full-iso9660-filenames \
-  -volid T2-KUBUNTU" \
+  -volid "T2-KUBUNTU" \
   -eltorito-boot boot/grub/i386-pc/eltorito.img \
   -no-emul-boot \
   -boot-load-size 4 \
@@ -42,9 +40,9 @@ xorriso -as mkisofs \
   -no-emul-boot \
   -isohybrid-gpt-basdat \
   -isohybrid-apm-hfsplus \
-  -output "${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso" \
-  "$ISO_WORK_DIR"
+  -output ${ISO_IMAGE_OUTPUT} \
+  ${ISO_WORK_DIR}
 
-echo >&2 "===]> Info: Custom ISO creation process complete. Find the ISO at ${DESTINATION}/kubuntu-24.10-t2-desktop-amd64.iso"
+echo >&2 "===]> Info: Custom ISO creation process complete. Find the ISO at ${ISO_IMAGE_OUTPUT} ..."
 
 
