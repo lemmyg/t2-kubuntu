@@ -26,6 +26,9 @@ rmdir /mnt/efiboot
 echo >&2 "===]> Info: Generating final ISO ... "
 (cd "$ISO_WORK_DIR" && find . -type f -print0 | xargs -0 md5sum > md5sum.txt)
 
+# Ensure the output directory exists
+mkdir -p "$(dirname "$ISO_IMAGE_OUTPUT")"
+
 xorriso -as mkisofs \
   -iso-level 3 \
   -full-iso9660-filenames \
