@@ -25,8 +25,8 @@ jobs:
         if: ${{ steps.cache-iso.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p ${{ github.workspace }}/Downloads
-          curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.10-desktop-amd64.iso \
-               https://cdimage.ubuntu.com/kubuntu/releases/24.10/release/kubuntu-24.10-desktop-amd64.iso
+          curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.04-desktop-amd64.iso \
+               https://cdimage.ubuntu.com/kubuntu/releases/24.04/release/kubuntu-24.04-desktop-amd64.iso
 
       - name: Run build script
         run: |
