@@ -19,7 +19,7 @@ jobs:
         id: cache-iso
         with:
           path: ${{ github.workspace }}/Downloads
-          key: kubuntu-iso-24.10
+          key: kubuntu-iso-24.04
           
       - name: Download ISO if not cached
         if: ${{ steps.cache-iso.outputs.cache-hit != 'true' }}
