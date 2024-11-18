@@ -14,15 +14,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Cache ISO
-        uses: actions/cache@v3
-        id: cache-iso
-        with:
-          path: ${{ github.workspace }}/Downloads
-          key: kubuntu-iso-24.04
-          
-      - name: Download ISO if not cached
-        if: ${{ steps.cache-iso.outputs.cache-hit != 'true' }}
+      - name: Download ISO
         run: |
           mkdir -p ${{ github.workspace }}/Downloads
           curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.04-desktop-amd64.iso \
