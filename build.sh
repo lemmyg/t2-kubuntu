@@ -1,12 +1,10 @@
 #!/bin/bash
 set -eu -o pipefail
 ROOT_PATH=$(pwd)
-TEMPDIR="/root/work"
-ISO_MOUNT_DIR="$TEMPDIR/kubuntu-original"    # Temporary mount point for the original ISO
+ISO_MOUNT_DIR="$ROOT_PATH/kubuntu-original"    # Temporary mount point for the original ISO
 #ISO_WORK_DIR="$TEMPDIR/kubuntu-iso"          # Working directory for the new ISO
 #CHROOT_DIR="$TEMPDIR/kubuntu-edit"           # Chroot environment directory
 echo "ROOT_PATH=$ROOT_PATH"
-echo "TEMPDIR=$TEMPDIR"  
 echo "ISO_MOUNT_DIR=$ISO_MOUNT_DIR"  
 echo "ISO_WORK_DIR=$ISO_WORK_DIR"  
 echo "CHROOT_DIR=$CHROOT_DIR"
