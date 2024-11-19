@@ -41,7 +41,7 @@ ls "${CHROOT_DIR}/tmp/setup_files"
 echo >&2 "===]> Info: Running chroot environment... "
 chroot "${CHROOT_DIR}" /bin/bash -c "/tmp/setup_files/chroot_iso.sh"
 echo >&2 "===]> Info: Getting Kernel environment... "
-T2_KERNEL=$(chroot "${CHROOT_DIR}" /bin/bash -c "apt-cache depends linux-t2 | grep -Eo 'linux-image-[^ ]+' | head -n 1")
+T2_KERNEL=$(chroot "${CHROOT_DIR}" /bin/bash -c "apt-cache depends linux-t2-lts | grep -Eo 'linux-image-[^ ]+' | head -n 1")
 #T2_KERNEL="linux-image-6.11.7-2-t2-oracular"
 echo >&2 "===]> Info: Cleanup the chroot environment... "
 # restore backup
