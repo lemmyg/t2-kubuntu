@@ -17,7 +17,7 @@ jobs:
       - name: Download ISO
         run: |
           mkdir -p ${{ github.workspace }}/Downloads
-          curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.0.1-desktop-amd64.iso \
+          curl -L -o ${{ github.workspace }}/Downloads/kubuntu-24.04.1-desktop-amd64.iso \
                https://cdimage.ubuntu.com/kubuntu/releases/24.04/release/kubuntu-24.04.1-desktop-amd64.iso
 
       - name: Run build script
