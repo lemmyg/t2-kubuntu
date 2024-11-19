@@ -20,15 +20,15 @@ update-grub
 apt install -y linux-t2 apple-t2-audio-config apple-firmware-script
 
 KERNEL_VERSION=$(dpkg -l | grep -E "^ii  linux-image-[0-9]+\.[0-9]+\.[0-9\.\-]+-generic" | awk '{print $2}' | sed 's/linux-image-\(.*\)-generic/\1/')
-apt purge -y -qq \
-    linux-generic \
-    linux-headers-${KERNEL_VERSION} \
-    linux-headers-${KERNEL_VERSION}-generic \
-    linux-headers-generic \
-    linux-image-${KERNEL_VERSION}-generic \
-    linux-image-generic \
-    linux-modules-${KERNEL_VERSION}-generic \
-    linux-modules-extra-${KERNEL_VERSION}-generic
+#apt purge -y -qq \
+#    linux-generic \
+#    linux-headers-${KERNEL_VERSION} \
+#    linux-headers-${KERNEL_VERSION}-generic \
+#    linux-headers-generic \
+#    linux-image-${KERNEL_VERSION}-generic \
+#    linux-image-generic \
+#    linux-modules-${KERNEL_VERSION}-generic \
+#    linux-modules-extra-${KERNEL_VERSION}-generic
 
 # Add udev Rule for AMD GPU Power Management
 cat <<EOL > /etc/udev/rules.d/30-amdgpu-pm.rules
