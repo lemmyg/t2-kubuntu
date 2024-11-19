@@ -17,7 +17,7 @@ apt update
 # Add Kernel Parameters to GRUB for Installed System
 sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"/GRUB_CMDLINE_LINUX_DEFAULT="quiet splash intel_iommu=on iommu=pt pcie_ports=compat"/' /etc/default/grub
 update-grub
-apt install -y linux-t2 apple-t2-audio-config apple-firmware-script
+apt install -y linux-t2-lts apple-t2-audio-config apple-firmware-script
 
 KERNEL_VERSION=$(dpkg -l | grep -E "^ii  linux-image-[0-9]+\.[0-9]+\.[0-9\.\-]+-generic" | awk '{print $2}' | sed 's/linux-image-\(.*\)-generic/\1/')
 apt purge -y -qq \
